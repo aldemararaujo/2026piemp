@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PIEMP UNCISAL 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap">
+<style>
+/* ─── Tokens ─────────────────────────────────────── */
+:root {
+  --bg:        #f8f9fc;
+  --bg2:       #ffffff;
+  --fg:        #1a1e2e;
+  --fg2:       #4a5068;
+  --fg3:       #7a82a0;
+  --accent:    #1a4fa8;
+  --accent2:   #2563eb;
+  --accent3:   #0ea5e9;
+  --gold:      #d97706;
+  --gold2:     #fbbf24;
+  --green:     #059669;
+  --green2:    #d1fae5;
+  --border:    #dde1ef;
+  --card:      #ffffff;
+  --shadow:    0 4px 24px rgba(26,79,168,.10);
+  --shadow2:   0 2px 8px rgba(26,79,168,.07);
+  --radius:    14px;
+  --radius2:   8px;
+  --hero-grad: linear-gradient(135deg, #0f2257 0%, #1a4fa8 55%, #2563eb 100%);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #0d1117;
+    --bg2:       #161b27;
+    --fg:        #e8ecf8;
+    --fg2:       #9aa3c0;
+    --fg3:       #5a6280;
+    --accent:    #4d8ef0;
+    --accent2:   #60a0ff;
+    --accent3:   #38bdf8;
+    --gold:      #fbbf24;
+    --gold2:     #fde68a;
+    --green:     #34d399;
+    --green2:    #064e3b;
+    --border:    #2a3050;
+    --card:      #1a2038;
+    --shadow:    0 4px 24px rgba(0,0,0,.4);
+    --shadow2:   0 2px 8px rgba(0,0,0,.3);
+    --hero-grad: linear-gradient(135deg, #080f22 0%, #0f2257 55%, #1a4fa8 100%);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:        #0d1117;
+  --bg2:       #161b27;
+  --fg:        #e8ecf8;
+  --fg2:       #9aa3c0;
+  --fg3:       #5a6280;
+  --accent:    #4d8ef0;
+  --accent2:   #60a0ff;
+  --accent3:   #38bdf8;
+  --gold:      #fbbf24;
+  --gold2:     #fde68a;
+  --green:     #34d399;
+  --green2:    #064e3b;
+  --border:    #2a3050;
+  --card:      #1a2038;
+  --shadow:    0 4px 24px rgba(0,0,0,.4);
+  --shadow2:   0 2px 8px rgba(0,0,0,.3);
+  --hero-grad: linear-gradient(135deg, #080f22 0%, #0f2257 55%, #1a4fa8 100%);
+  color-scheme: dark;
+}
+
+/* ─── Reset & Base ────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Deck ───────────────────────────────────────── */
+#deck {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(60px);
+  transition: opacity .38s ease, transform .38s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 0 56px;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* ─── Hero (slide 1) ─────────────────────────────── */
+.slide-hero {
+  background: var(--hero-grad);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  padding: 0 24px 56px;
+}
+.hero-logo {
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-logo span { display: inline-block; width: 36px; height: 1px; background: rgba(255,255,255,.4); }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 99px;
+  padding: 6px 18px;
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  margin-bottom: 24px;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  text-wrap: balance;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: #bfdbfe;
+  margin-bottom: 40px;
+  text-wrap: balance;
+  max-width: 640px;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 24px;
+  font-size: 13px;
+  color: rgba(255,255,255,.75);
+}
+.hero-meta strong { color: #fff; }
+.hero-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #60a5fa, #34d399);
+  border-radius: 2px;
+  margin: 32px auto;
+}
+
+/* ─── Standard Slide ─────────────────────────────── */
+.slide-body {
+  flex: 1;
+  padding: 48px 6vw 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.slide-header {
+  padding: 28px 6vw 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.slide-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.slide-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--fg);
+  text-wrap: balance;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+.slide-divider {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  border-radius: 2px;
+  margin: 14px 0 0;
+}
+
+/* ─── Cards & Grids ──────────────────────────────── */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+@media (max-width: 700px) {
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .grid3, .grid4 { grid-template-columns: 1fr 1fr; }
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow2);
+}
+.card-accent {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius2);
+  padding: 18px 20px;
+}
+.card-gold {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius2);
+  padding: 18px 20px;
+}
+.card-green {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius2);
+  padding: 18px 20px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  text-align: center;
+  box-shadow: var(--shadow2);
+}
+.stat-number {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 12px;
+  color: var(--fg2);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+.highlight-box {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  color: #fff;
+}
+
+/* ─── Typography ─────────────────────────────────── */
+h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 8px;
+}
+h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg2);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 6px;
+}
+p, li {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--fg2);
+}
+ul { list-style: none; padding: 0; }
+ul li { padding-left: 18px; position: relative; margin-bottom: 4px; }
+ul li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-size: 12px; top: 2px; }
+.lead { font-size: 16px; color: var(--fg); line-height: 1.6; }
+strong { color: var(--fg); font-weight: 600; }
+
+/* ─── Phase steps ───────────────────────────────── */
+.phases { display: flex; flex-direction: column; gap: 12px; }
+.phase {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.phase-num {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(26,79,168,.25);
+}
+.phase-content h3 { margin-bottom: 3px; font-size: 14.5px; }
+.phase-content p { font-size: 13px; }
+
+/* ─── Gantt mini ────────────────────────────────── */
+.gantt { width: 100%; border-collapse: collapse; font-size: 12px; }
+.gantt th {
+  background: var(--accent);
+  color: #fff;
+  padding: 7px 10px;
+  font-weight: 600;
+  font-size: 11px;
+  text-align: center;
+  letter-spacing: .05em;
+}
+.gantt td {
+  border: 1px solid var(--border);
+  padding: 7px 10px;
+  color: var(--fg2);
+  vertical-align: middle;
+}
+.gantt tr:nth-child(even) td { background: var(--bg2); }
+.bar { height: 10px; border-radius: 5px; background: var(--accent); }
+.bar.bar-gold { background: var(--gold); }
+.bar.bar-green { background: var(--green); }
+td.activity { color: var(--fg); font-weight: 500; font-size: 12px; }
+
+/* ─── Mentor cards ──────────────────────────────── */
+.mentor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.mentor-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  box-shadow: var(--shadow2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mentor-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.mentor-name { font-size: 13px; font-weight: 700; color: var(--fg); }
+.mentor-area { font-size: 11.5px; color: var(--fg3); }
+.mentor-badge {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 2px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+/* ─── Experience table ──────────────────────────── */
+.exp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.exp-table th {
+  background: var(--accent);
+  color: #fff;
+  padding: 9px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.exp-table td {
+  border: 1px solid var(--border);
+  padding: 9px 12px;
+  color: var(--fg2);
+  vertical-align: top;
+}
+.exp-table tr:nth-child(even) td { background: var(--bg2); }
+.exp-table tr:hover td { background: var(--bg); }
+.tag-chip {
+  display: inline-block;
+  background: rgba(26,79,168,.1);
+  color: var(--accent);
+  border-radius: 99px;
+  padding: 2px 9px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* ─── Progress bar ───────────────────────────────── */
+#progress-track {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--border);
+  z-index: 100;
+}
+#progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  transition: width .35s ease;
+}
+
+/* ─── Controls bar ───────────────────────────────── */
+#controls {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 100;
+  gap: 12px;
+}
+.ctrl-group { display: flex; align-items: center; gap: 8px; }
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  color: var(--fg2);
+  width: 36px; height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all .18s;
+  flex-shrink: 0;
+  padding: 0;
+}
+.ctrl-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.ctrl-btn:active { transform: scale(.93); }
+#slide-counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg2);
+  font-variant-numeric: tabular-nums;
+  min-width: 60px;
+  text-align: center;
+}
+#slide-title-bar {
+  font-size: 12px;
+  color: var(--fg3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+@media (max-width: 480px) { #slide-title-bar { display: none; } }
+
+/* ─── Thumbnail overview ────────────────────────── */
+#overview {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  z-index: 200;
+  padding: 24px;
+  overflow-y: auto;
+  backdrop-filter: blur(4px);
+}
+#overview.open { display: block; }
+#overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.thumb {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all .18s;
+}
+.thumb:hover { border-color: var(--accent); transform: translateY(-2px); }
+.thumb.current { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(37,99,235,.25); }
+.thumb-num { font-size: 10px; color: var(--fg3); margin-bottom: 4px; font-weight: 600; }
+.thumb-title { font-size: 12px; font-weight: 700; color: var(--fg); line-height: 1.3; }
+
+/* ─── Fullscreen indicator ──────────────────────── */
+:fullscreen body, :-webkit-full-screen body { background: var(--bg); }
+
+/* ─── Kbd hint ───────────────────────────────────── */
+#kbd-hint {
+  position: fixed;
+  top: 14px; right: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 8px 14px;
+  font-size: 11px;
+  color: var(--fg3);
+  z-index: 50;
+  opacity: 1;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+#kbd-hint.hidden { opacity: 0; }
+</style>
+</head>
+<body>
+
+<div id="progress-track"><div id="progress-fill"></div></div>
+
+<div id="kbd-hint">← → Navegar · G Grade · F Tela cheia</div>
+
+<!-- ████████ SLIDES ████████ -->
+<div id="deck">
+
+<!-- Slide 1: Capa -->
+<section class="slide slide-hero active" data-title="Capa">
+  <div class="hero-logo"><span></span>CNPq / MCTI / MEMP — Chamada Nº 5/2026<span></span></div>
+  <div class="hero-badge">🎓 PIEMP · Programa de Iniciação ao Empreendedorismo</div>
+  <h1 class="hero-title">Programa PIEMP<br>na UNCISAL</h1>
+  <p class="hero-subtitle">Formando empreendedores em saúde para o ecossistema de inovação de Alagoas</p>
+  <div class="hero-divider"></div>
+  <div class="hero-meta">
+    <div>🏫 <strong>UNCISAL</strong> — Univ. Estadual de Ciências da Saúde de Alagoas</div>
+    <div>👤 Proponente: <strong>Prof. Aldemar Araujo Castro</strong></div>
+    <div>📋 5 bolsas ITI · Região Nordeste</div>
+    <div>📅 Outubro 2026</div>
+  </div>
+</section>
+
+<!-- Slide 2: O que é o PIEMP -->
+<section class="slide" data-title="O que é o PIEMP">
+  <div class="slide-header">
+    <div class="slide-tag">Contexto</div>
+    <h2 class="slide-title">O Programa PIEMP</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <p class="lead" style="margin-bottom:24px; color: var(--fg)">
+      O <strong>Programa de Iniciação ao Empreendedorismo (PIEMP)</strong> é uma iniciativa federal que financia ações de empreendedorismo e inovação nas Instituições Científicas, Tecnológicas e de Inovação (ICTs) brasileiras.
+    </p>
+    <div class="grid2" style="margin-bottom:20px">
+      <div class="highlight-box">
+        <h4 style="color:rgba(255,255,255,.7);margin-bottom:8px">Base Legal</h4>
+        <p style="color:#fff;font-size:13.5px;line-height:1.6">Lei nº 10.973/2004 (Lei da Inovação) · Lei nº 13.243/2016 · Decreto nº 9.283/2018 · Portaria MCTI 5.250/2024</p>
+      </div>
+      <div class="card">
+        <h4>Objetivos Centrais</h4>
+        <ul>
+          <li>Fomentar cultura empreendedora nas ICTs</li>
+          <li>Apoiar a criação de startups e empresas inovadoras</li>
+          <li>Conectar academia e mercado</li>
+          <li>Capacitar alunos bolsistas com vivência prática</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="stat-card">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Bolsas ITI solicitadas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Meses de execução</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color:var(--gold)">30%</div>
+        <div class="stat-label">Reserva regional Nordeste</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 3: Perfil da UNCISAL -->
+<section class="slide" data-title="Perfil da UNCISAL">
+  <div class="slide-header">
+    <div class="slide-tag">Instituição</div>
+    <h2 class="slide-title">UNCISAL — Quem Somos</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-bottom:20px">
+      <div>
+        <p class="lead" style="margin-bottom:16px">A <strong>Universidade Estadual de Ciências da Saúde de Alagoas (UNCISAL)</strong> é uma ICT pública estadual com foco exclusivo nas ciências da saúde, única no Brasil com este perfil institucional.</p>
+        <div class="card-accent" style="margin-bottom:12px">
+          <h3>Gestão Institucional</h3>
+          <p>Reitora: <strong>Profa. Dra. Pollyanna Almeida dos Santos Abu Hana</strong></p>
+        </div>
+        <div class="card-gold">
+          <h3>Missão Institucional</h3>
+          <p>Formar profissionais de saúde com competências para inovar, empreender e transformar o sistema de saúde alagoano</p>
+        </div>
+      </div>
+      <div>
+        <div class="grid2" style="margin-bottom:14px">
+          <div class="stat-card">
+            <div class="stat-number">7</div>
+            <div class="stat-label">Cursos de Graduação em Saúde</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">18</div>
+            <div class="stat-label">Programas de Pós-Graduação</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" style="color:var(--gold)">60+</div>
+            <div class="stat-label">Anos de história</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" style="color:var(--green)">AL</div>
+            <div class="stat-label">Única ICT Pública Est. de Saúde em AL</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Áreas Estratégicas</h3>
+          <ul>
+            <li>Saúde digital e tecnologias assistivas</li>
+            <li>Inovação em serviços de saúde</li>
+            <li>Bioeconomia e produtos naturais</li>
+            <li>Empreendedorismo social em saúde</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 4: NIT e UNITEC -->
+<section class="slide" data-title="NIT e UNITEC">
+  <div class="slide-header">
+    <div class="slide-tag">Infraestrutura de Inovação</div>
+    <h2 class="slide-title">NIT e UNITEC: Base Institucional</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-bottom:20px">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0">🏛</div>
+          <div>
+            <h3 style="margin:0">Núcleo de Inovação Tecnológica</h3>
+            <p style="font-size:11px;margin:0">NIT · Portaria GR 173/2009</p>
+          </div>
+        </div>
+        <ul>
+          <li>Gestão da propriedade intelectual</li>
+          <li>Articulação com parceiros externos</li>
+          <li>Suporte às atividades de inovação</li>
+          <li>Vinculado à Lei 10.973/2004</li>
+        </ul>
+        <p style="margin-top:10px;font-size:12px;color:var(--fg3)">Coord.: Profa. Kristiana Cerqueira Bomfim Costa</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0">⚡</div>
+          <div>
+            <h3 style="margin:0">Unidade de Inovação Tecnológica</h3>
+            <p style="font-size:11px;margin:0">UNITEC · Resolução CONSU 23/2017</p>
+          </div>
+        </div>
+        <ul>
+          <li>Incubação de startups e spin-offs</li>
+          <li>Mentorias e treinamentos</li>
+          <li>Conexão com ecossistema AL</li>
+          <li>Apoio ao empreendedorismo discente</li>
+        </ul>
+        <p style="margin-top:10px;font-size:12px;color:var(--fg3)">Experiência desde 2017 com projetos de impacto</p>
+      </div>
+    </div>
+    <div class="card-green">
+      <h3>Marco Normativo — Política de Inovação (em consolidação)</h3>
+      <p style="font-size:13px;line-height:1.6">A UNCISAL sustenta sua Política de Inovação no conjunto normativo composto pela <strong>Resolução CONSU 033/2010</strong> (NIT), <strong>Resolução CONSU 23/2017</strong> (UNITEC) e <strong>PDI 2025-2029</strong> (Resolução CONSU 14/2025), que materializa os compromissos de inovação e empreendedorismo na instituição. Resolução específica em processo de conclusão.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 5: Objetivos -->
+<section class="slide" data-title="Objetivos do Programa">
+  <div class="slide-header">
+    <div class="slide-tag">Proposta</div>
+    <h2 class="slide-title">Objetivos do Programa na UNCISAL</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <div class="card-accent" style="margin-bottom:20px;border-left:4px solid var(--accent2);padding:18px 22px">
+      <p class="lead" style="color:var(--fg)"><strong>Objetivo Geral:</strong> Estruturar e executar um programa de formação empreendedora na UNCISAL, por meio de atividades de sensibilização, capacitação e mentorias, visando o desenvolvimento de projetos inovadores na área da saúde por alunos e pesquisadores.</p>
+    </div>
+    <div class="grid2">
+      <div>
+        <h4 style="margin-bottom:12px">Objetivos Específicos</h4>
+        <div class="card" style="margin-bottom:12px">
+          <h3>🎯 Sensibilização</h3>
+          <p>Ampliar a cultura empreendedora entre discentes e docentes por meio de eventos, workshops e cases de sucesso em saúde digital</p>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <h3>📚 Capacitação</h3>
+          <p>Oferecer trilha de formação em empreendedorismo inovador, com módulos de ideação, validação, modelagem de negócios e captação</p>
+        </div>
+        <div class="card">
+          <h3>🚀 Incubação</h3>
+          <p>Selecionar e acompanhar equipes com potencial empreendedor via chamada interna, conectando-as ao banco de mentores e ao ecossistema</p>
+        </div>
+      </div>
+      <div>
+        <h4 style="margin-bottom:12px">Impacto Esperado</h4>
+        <div class="grid2" style="gap:12px">
+          <div class="stat-card">
+            <div class="stat-number">5</div>
+            <div class="stat-label">Bolsistas ITI formados</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Fases metodológicas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" style="color:var(--gold)">5</div>
+            <div class="stat-label">Mentores especializados</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" style="color:var(--green)">12</div>
+            <div class="stat-label">Meses de execução</div>
+          </div>
+        </div>
+        <div class="card-green" style="margin-top:14px">
+          <h3>Alinhamento Estratégico</h3>
+          <p>O programa converge com o PDI 2025-2029 da UNCISAL, que elenca inovação e empreendedorismo entre os eixos prioritários de desenvolvimento institucional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 6: Metodologia -->
+<section class="slide" data-title="Metodologia — 3 Fases">
+  <div class="slide-header">
+    <div class="slide-tag">Execução</div>
+    <h2 class="slide-title">Metodologia em 3 Fases</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <div class="phases" style="margin-bottom:24px">
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <div class="phase-content">
+          <h3>Sensibilização e Divulgação <span style="font-weight:400;color:var(--fg3);font-size:12px">(meses 1–3)</span></h3>
+          <p>Realização de eventos de empreendedorismo, workshops com empreendedores de saúde, divulgação do programa em todos os cursos da UNCISAL. Produção de materiais de comunicação. Abertura e divulgação da chamada interna de projetos.</p>
+        </div>
+      </div>
+      <div style="width:3px;height:18px;background:var(--border);margin-left:16px"></div>
+      <div class="phase">
+        <div class="phase-num" style="background:var(--gold)">2</div>
+        <div class="phase-content">
+          <h3>Capacitação e Formação <span style="font-weight:400;color:var(--fg3);font-size:12px">(meses 3–8)</span></h3>
+          <p>Trilha de formação com módulos presenciais e híbridos: Design Thinking, Modelagem de Negócios (Canvas), Validação de Mercado, Propriedade Intelectual e Captação de Recursos. Mentorias individuais e em grupo com o banco de mentores. Avaliação de projetos selecionados.</p>
+        </div>
+      </div>
+      <div style="width:3px;height:18px;background:var(--border);margin-left:16px"></div>
+      <div class="phase">
+        <div class="phase-num" style="background:var(--green)">3</div>
+        <div class="phase-content">
+          <h3>Desenvolvimento e Avaliação <span style="font-weight:400;color:var(--fg3);font-size:12px">(meses 8–12)</span></h3>
+          <p>Acompanhamento do desenvolvimento dos projetos pelas equipes selecionadas. Avaliação de resultados por comitê externo. Apresentação pública dos projetos. Elaboração do relatório final e disseminação dos resultados do programa.</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card-accent">
+        <h3>Chamada Interna de Projetos</h3>
+        <ul>
+          <li>Edital interno publicado no mês 2</li>
+          <li>Equipes de 2 a 5 membros (discentes + docente)</li>
+          <li>Foco em inovação na área da saúde</li>
+          <li>Seleção por banca multidisciplinar</li>
+        </ul>
+      </div>
+      <div class="card-gold">
+        <h3>Critérios de Avaliação</h3>
+        <ul>
+          <li>Originalidade e potencial inovador</li>
+          <li>Relevância para o sistema de saúde</li>
+          <li>Viabilidade técnica e econômica</li>
+          <li>Engajamento e comprometimento da equipe</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 7: Banco de Mentores -->
+<section class="slide" data-title="Banco de Mentores">
+  <div class="slide-header">
+    <div class="slide-tag">Mentoria</div>
+    <h2 class="slide-title">Banco de Mentores</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <p class="lead" style="margin-bottom:20px">Cinco mentores especializados, com perfis complementares em saúde, tecnologia, negócios e empreendedorismo, prontos para orientar as equipes selecionadas.</p>
+    <div class="mentor-grid">
+      <div class="mentor-card">
+        <div class="mentor-avatar">AM</div>
+        <div class="mentor-name">Alex Melo da Silva</div>
+        <div class="mentor-area">Inovação e Tecnologia</div>
+        <span class="mentor-badge">CNPq Lattes ✓</span>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-avatar">EA</div>
+        <div class="mentor-name">Eraldo Alves da Silva Neto</div>
+        <div class="mentor-area">Empreendedorismo</div>
+        <span class="mentor-badge">CNPq Lattes ✓</span>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-avatar">PM</div>
+        <div class="mentor-name">Paulo Marinho Gomes</div>
+        <div class="mentor-area">Gestão em Saúde</div>
+        <span class="mentor-badge">CNPq Lattes ✓</span>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-avatar">AC</div>
+        <div class="mentor-name">Aldemar Araujo Castro</div>
+        <div class="mentor-area">Saúde Digital · Startup</div>
+        <span class="mentor-badge">CNPq Lattes ✓</span>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-avatar">GB</div>
+        <div class="mentor-name">Guilherme Benjamim Brandão Pitta</div>
+        <div class="mentor-area">Pesquisa Translacional</div>
+        <span class="mentor-badge">CNPq Lattes ✓</span>
+      </div>
+    </div>
+    <div class="card-green" style="margin-top:20px">
+      <h3>Dinâmica de Mentoria</h3>
+      <p style="font-size:13px;line-height:1.6">Cada equipe selecionada na chamada interna contará com sessões mensais de orientação individual e participará de encontros coletivos com o banco completo. Os mentores atuarão nas dimensões técnica, mercadológica, de acesso a financiamento e de comunicação do projeto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 8: Experiência Prévia -->
+<section class="slide" data-title="Experiência Prévia">
+  <div class="slide-header">
+    <div class="slide-tag">Histórico</div>
+    <h2 class="slide-title">Experiência em Empreendedorismo</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <p style="margin-bottom:16px;font-size:14px;color:var(--fg2)">A UNCISAL e seu NIT/UNITEC possuem histórico comprovado de ações de empreendedorismo, com projetos financiados pela FAPEAL e iniciativas de incubação de startups.</p>
+    <div style="overflow-x:auto;">
+      <table class="exp-table">
+        <thead>
+          <tr>
+            <th style="width:35%">Projeto / Iniciativa</th>
+            <th>Período</th>
+            <th>Financiador</th>
+            <th>Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Difusão do Empreendedorismo — Ciclo 1</strong></td>
+            <td>2019–2020</td>
+            <td><span class="tag-chip">FAPEAL</span></td>
+            <td>Capacitação de 80+ discentes; 5 ideias de negócio geradas</td>
+          </tr>
+          <tr>
+            <td><strong>Difusão do Empreendedorismo — Ciclo 2</strong></td>
+            <td>2020–2021</td>
+            <td><span class="tag-chip">FAPEAL</span></td>
+            <td>Workshop em saúde digital; parceria com SEBRAE-AL</td>
+          </tr>
+          <tr>
+            <td><strong>Difusão do Empreendedorismo — Ciclo 3</strong></td>
+            <td>2022–2023</td>
+            <td><span class="tag-chip">FAPEAL</span></td>
+            <td>Mentoria para 3 equipes; pitch final com investidores</td>
+          </tr>
+          <tr>
+            <td><strong>FECHAFERIDAS Tecnologia — Incubação</strong> <br><small style="color:var(--fg3)">CNPJ: 65.132.307/0001-91</small></td>
+            <td>2023–atual</td>
+            <td><span class="tag-chip" style="background:rgba(217,119,6,.1);color:var(--gold)">UNITEC</span></td>
+            <td>Solução de saúde digital para manejo de feridas; Inova Simples</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-accent" style="margin-top:16px">
+      <h3>Destaque: FECHAFERIDAS Tecnologia em Saúde</h3>
+      <p style="font-size:13px;line-height:1.6">Startup incubada na UNITEC/UNCISAL, fundada pelo proponente Prof. Aldemar Castro, formalizada como Empresa Inova Simples (I.S.) — modelo jurídico específico para startups de base científica. Atua no desenvolvimento de solução tecnológica inovadora em saúde digital para manejo e acompanhamento de feridas complexas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 9: Cronograma -->
+<section class="slide" data-title="Cronograma">
+  <div class="slide-header">
+    <div class="slide-tag">Planejamento</div>
+    <h2 class="slide-title">Cronograma de Execução</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <div style="overflow-x:auto;">
+      <table class="gantt">
+        <thead>
+          <tr>
+            <th style="text-align:left;width:30%">Atividade</th>
+            <th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th>
+            <th>M7</th><th>M8</th><th>M9</th><th>M10</th><th>M11</th><th>M12</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="activity">Planejamento e organização</td>
+            <td><div class="bar"></div></td><td><div class="bar"></div></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="activity">Divulgação e chamada interna</td>
+            <td></td><td><div class="bar"></div></td><td><div class="bar"></div></td>
+            <td><div class="bar"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="activity">Seleção das equipes</td>
+            <td></td><td></td><td></td><td><div class="bar bar-gold"></div></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="activity">Capacitação — Módulos 1 a 4</td>
+            <td></td><td></td><td></td><td></td>
+            <td><div class="bar bar-gold"></div></td><td><div class="bar bar-gold"></div></td>
+            <td><div class="bar bar-gold"></div></td><td><div class="bar bar-gold"></div></td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="activity">Mentorias individuais</td>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td><div class="bar"></div></td><td><div class="bar"></div></td><td><div class="bar"></div></td>
+            <td><div class="bar"></div></td><td><div class="bar"></div></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="activity">Desenvolvimento dos projetos</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td><div class="bar bar-green"></div></td><td><div class="bar bar-green"></div></td>
+            <td><div class="bar bar-green"></div></td><td><div class="bar bar-green"></div></td><td></td>
+          </tr>
+          <tr>
+            <td class="activity">Avaliação e Demo Day</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td><div class="bar bar-gold"></div></td><td><div class="bar bar-gold"></div></td>
+          </tr>
+          <tr>
+            <td class="activity">Relatório final</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td><div class="bar bar-green"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid3" style="margin-top:16px">
+      <div class="card" style="text-align:center;border-top:3px solid var(--accent)">
+        <div class="stat-number" style="font-size:1.6rem">Fase 1</div>
+        <div class="stat-label">Sensibilização · Meses 1–3</div>
+      </div>
+      <div class="card" style="text-align:center;border-top:3px solid var(--gold)">
+        <div class="stat-number" style="font-size:1.6rem;color:var(--gold)">Fase 2</div>
+        <div class="stat-label">Capacitação · Meses 3–8</div>
+      </div>
+      <div class="card" style="text-align:center;border-top:3px solid var(--green)">
+        <div class="stat-number" style="font-size:1.6rem;color:var(--green)">Fase 3</div>
+        <div class="stat-label">Desenvolvimento · Meses 8–12</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 10: Proponente -->
+<section class="slide" data-title="Proponente">
+  <div class="slide-header">
+    <div class="slide-tag">Equipe Proposta</div>
+    <h2 class="slide-title">Proponente e Representação Institucional</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-bottom:20px">
+      <div class="highlight-box" style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <h4 style="color:rgba(255,255,255,.7);margin-bottom:4px">Representante Institucional</h4>
+          <h3 style="color:#fff;font-size:18px">Prof. Aldemar Araujo Castro</h3>
+          <p style="color:#bfdbfe;font-size:13px">Professor Assistente · UNCISAL</p>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.2);padding-top:12px">
+          <p style="color:#e0f2fe;font-size:12.5px;line-height:1.6">
+            Doutor em Ciências da Saúde · Pesquisador em inovação em saúde digital · Fundador da FECHAFERIDAS Tecnologia (Inova Simples) · Membro do NIT e UNITEC-UNCISAL
+          </p>
+        </div>
+        <div>
+          <p style="color:#bfdbfe;font-size:11.5px">CPF: 725.056.134-00</p>
+          <p style="color:#bfdbfe;font-size:11.5px">Lattes: lattes.cnpq.br/2259022333178681</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <h3>Titulação e Atuação</h3>
+          <ul>
+            <li>Médico com especialidade clínica</li>
+            <li>Advogado com atuação em direito da saúde</li>
+            <li>Pesquisador em ciências da saúde e inovação</li>
+            <li>Empreendedor — startup FECHAFERIDAS</li>
+          </ul>
+        </div>
+        <div class="card-gold">
+          <h3>🏛 Reitora — Anuência Institucional</h3>
+          <p style="font-size:13px">Profa. Dra. <strong>Pollyanna Almeida dos Santos Abu Hana</strong>, Reitora da UNCISAL, assina a Declaração de Indicação (Anexo III), atestando o vínculo formal e a designação do Representante Institucional.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-accent">
+      <h3>Bolsistas ITI — Perfil Esperado</h3>
+      <p style="font-size:13px;line-height:1.6">Serão selecionados <strong>5 bolsistas de Iniciação Tecnológica e Industrial (ITI)</strong>, preferencialmente discentes dos cursos de graduação e pós-graduação da UNCISAL, com interesse comprovado em empreendedorismo e inovação em saúde. Os bolsistas participarão de todas as etapas do programa como agentes multiplicadores.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 11: Impacto -->
+<section class="slide" data-title="Impacto Esperado">
+  <div class="slide-header">
+    <div class="slide-tag">Resultados</div>
+    <h2 class="slide-title">Impacto Esperado</h2>
+    <div class="slide-divider"></div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-bottom:20px">
+      <div>
+        <div class="card" style="margin-bottom:14px;border-top:3px solid var(--accent)">
+          <h3>🎓 Formação de Talentos</h3>
+          <p>5 bolsistas ITI com formação prática em empreendedorismo; impacto indireto em centenas de estudantes sensibilizados ao longo dos 12 meses</p>
+        </div>
+        <div class="card" style="margin-bottom:14px;border-top:3px solid var(--gold)">
+          <h3>💡 Projetos Inovadores</h3>
+          <p>Equipes selecionadas com projetos desenvolvidos até nível MVP; potencial de spin-off ou empresa incubada na UNITEC ao final do programa</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--green)">
+          <h3>🤝 Ecossistema de Inovação</h3>
+          <p>Fortalecimento da conexão UNCISAL com o ecossistema de inovação alagoano: FAPEAL, SEBRAE, IEL, empresas e investidores do setor de saúde</p>
+        </div>
+      </div>
+      <div>
+        <div class="highlight-box" style="margin-bottom:14px">
+          <h4 style="color:rgba(255,255,255,.7);margin-bottom:10px">Resumo da Proposta</h4>
+          <p style="color:#e0f2fe;font-size:13px;line-height:1.68">O Programa PIEMP na UNCISAL tem por objetivo a implementação de ações sistematizadas de empreendedorismo científico e tecnológico, com foco no desenvolvimento de soluções inovadoras para a área da saúde. Serão ofertadas 5 bolsas de Iniciação Tecnológica e Industrial, contemplando discentes de graduação e pós-graduação da UNCISAL para atuação em empreendedorismo e inovação tecnológica em saúde.</p>
+        </div>
+        <div class="card-green">
+          <h3>Alinhamento com Políticas Públicas</h3>
+          <ul>
+            <li>Marco Legal da Inovação (Lei 13.243/2016)</li>
+            <li>Estratégia Nacional de Ciência e Tecnologia</li>
+            <li>Política Nacional de Inovação (Decreto 10.534/2020)</li>
+            <li>PDI UNCISAL 2025-2029 — Eixo Inovação</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 12: Encerramento -->
+<section class="slide slide-hero" data-title="Encerramento">
+  <div class="hero-badge" style="background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.4);color:#34d399">✅ Proposta pronta para submissão</div>
+  <h1 class="hero-title" style="font-size:clamp(2.2rem,5vw,4rem)">PIEMP UNCISAL 2026</h1>
+  <div class="hero-divider" style="background:linear-gradient(90deg,#34d399,#60a5fa)"></div>
+  <p class="hero-subtitle">Uma proposta alinhada com o futuro da saúde e da inovação em Alagoas</p>
+  <div class="hero-meta" style="flex-direction:column;align-items:center;gap:10px">
+    <div>📧 Proponente: <strong>Prof. Aldemar Araujo Castro</strong> · UNCISAL</div>
+    <div>🌐 NIT: <strong>nit.uncisal.edu.br</strong></div>
+    <div>📋 Plataforma Carlos Chagas — CNPq/MCTI/MEMP Chamada Nº 5/2026</div>
+    <div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)">Outubro · 2026</div>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<!-- Controls -->
+<div id="controls">
+  <div class="ctrl-group">
+    <button class="ctrl-btn" id="btn-prev" title="Anterior (←)">‹</button>
+    <span id="slide-counter">1 / 12</span>
+    <button class="ctrl-btn" id="btn-next" title="Próximo (→)">›</button>
+  </div>
+  <span id="slide-title-bar"></span>
+  <div class="ctrl-group">
+    <button class="ctrl-btn" id="btn-overview" title="Visão geral (G)">⊞</button>
+    <button class="ctrl-btn" id="btn-theme" title="Tema claro/escuro">◑</button>
+    <button class="ctrl-btn" id="btn-full" title="Tela cheia (F)">⛶</button>
+  </div>
+</div>
+
+<!-- Overview modal -->
+<div id="overview">
+  <div id="overview-grid"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const N = slides.length;
+  let cur = 0;
+  let theme = null; // null = system
+
+  const fill   = document.getElementById('progress-fill');
+  const counter = document.getElementById('slide-counter');
+  const titleBar = document.getElementById('slide-title-bar');
+  const hint   = document.getElementById('kbd-hint');
+  const overview = document.getElementById('overview');
+  const overGrid = document.getElementById('overview-grid');
+
+  // Build overview thumbnails
+  slides.forEach((s, i) => {
+    const th = document.createElement('div');
+    th.className = 'thumb' + (i === 0 ? ' current' : '');
+    th.innerHTML = `<div class="thumb-num">Slide ${i+1}</div><div class="thumb-title">${s.dataset.title || ''}</div>`;
+    th.addEventListener('click', () => { goTo(i); toggleOverview(false); });
+    overGrid.appendChild(th);
+  });
+
+  function updateUI(){
+    fill.style.width = ((cur+1)/N*100) + '%';
+    counter.textContent = (cur+1) + ' / ' + N;
+    titleBar.textContent = slides[cur].dataset.title || '';
+    overGrid.querySelectorAll('.thumb').forEach((th,i) => th.classList.toggle('current', i===cur));
+  }
+
+  function goTo(idx, dir){
+    if(idx < 0 || idx >= N || idx === cur) return;
+    const prev = cur;
+    slides[prev].classList.remove('active');
+    slides[prev].classList.add(idx > prev ? 'exit-left' : '');
+    setTimeout(()=>{ slides[prev].classList.remove('exit-left'); slides[prev].style.transform=''; }, 400);
+    slides[prev].style.transform = idx > prev ? 'translateX(-60px)' : 'translateX(60px)';
+
+    cur = idx;
+    slides[cur].style.transform = idx > prev ? 'translateX(60px)' : 'translateX(-60px)';
+    slides[cur].classList.add('active');
+    requestAnimationFrame(()=>{ slides[cur].style.transition='opacity .38s ease, transform .38s cubic-bezier(.4,0,.2,1)'; slides[cur].style.transform='translateX(0)'; });
+    updateUI();
+  }
+
+  function next(){ goTo(cur+1, 1); }
+  function prev(){ goTo(cur-1, -1); }
+
+  // Buttons
+  document.getElementById('btn-next').addEventListener('click', next);
+  document.getElementById('btn-prev').addEventListener('click', prev);
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown') { e.preventDefault(); next(); }
+    if(e.key==='ArrowLeft'||e.key==='PageUp') { e.preventDefault(); prev(); }
+    if(e.key==='g'||e.key==='G') toggleOverview();
+    if(e.key==='f'||e.key==='F') toggleFull();
+    if(e.key==='Escape') { if(overview.classList.contains('open')) toggleOverview(false); }
+  });
+
+  // Theme toggle
+  document.getElementById('btn-theme').addEventListener('click', () => {
+    if(!theme){
+      const sys = window.matchMedia('(prefers-color-scheme:dark)').matches;
+      theme = sys ? 'light' : 'dark';
+    } else {
+      theme = theme==='dark' ? 'light' : 'dark';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  });
+
+  // Fullscreen
+  function toggleFull(){
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen && document.exitFullscreen();
+    }
+  }
+  document.getElementById('btn-full').addEventListener('click', toggleFull);
+
+  // Overview
+  function toggleOverview(force){
+    const open = force !== undefined ? force : !overview.classList.contains('open');
+    overview.classList.toggle('open', open);
+  }
+  document.getElementById('btn-overview').addEventListener('click', () => toggleOverview());
+  overview.addEventListener('click', e => { if(e.target===overview) toggleOverview(false); });
+
+  // Touch / swipe
+  let tx0 = null;
+  document.getElementById('deck').addEventListener('touchstart', e=>{ tx0 = e.touches[0].clientX; }, {passive:true});
+  document.getElementById('deck').addEventListener('touchend', e=>{
+    if(tx0===null) return;
+    const dx = e.changedTouches[0].clientX - tx0;
+    tx0 = null;
+    if(Math.abs(dx)>40){ dx<0 ? next() : prev(); }
+  }, {passive:true});
+
+  // Click on slide body to advance (not on interactive elements)
+  document.getElementById('deck').addEventListener('click', e=>{
+    if(e.target.closest('button,a,table,select,input,.ctrl-btn')) return;
+    const mid = window.innerWidth/2;
+    e.clientX > mid ? next() : prev();
+  });
+
+  // Hide hint after 5s
+  setTimeout(()=>{ hint.classList.add('hidden'); }, 5000);
+
+  // Restore theme from storage
+  try {
+    const saved = localStorage.getItem('piemp-theme');
+    if(saved){ theme=saved; document.documentElement.setAttribute('data-theme',saved); }
+  } catch(e){}
+
+  // Save theme
+  const btnTheme = document.getElementById('btn-theme');
+  btnTheme.addEventListener('click', () => {
+    try { localStorage.setItem('piemp-theme', theme); } catch(e){}
+  }, true);
+
+  updateUI();
+})();
+</script>
+</body>
+</html>
