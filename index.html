@@ -520,6 +520,7 @@ td.activity { color: var(--fg); font-weight: 500; font-size: 12px; }
 .thumb {
   background: var(--card);
   border: 2px solid var(--border);
+  cursor: pointer;
   border-radius: 10px;
   padding: 12px;
   cursor: pointer;
@@ -554,13 +555,16 @@ td.activity { color: var(--fg); font-weight: 500; font-size: 12px; }
 #resultado-selo {
   position: fixed;
   top: 22px;
-  left: 32px;
+  right: 32px;
+  left: auto;
   z-index: 9000;
   pointer-events: none;
-  transform: rotate(-14deg);
+  transform: rotate(14deg);
   transform-origin: center center;
   user-select: none;
 }
+#overview.open + * #resultado-selo,
+body.overview-open #resultado-selo { display: none; }
 .selo-anel {
   width: 168px;
   height: 168px;
@@ -1247,9 +1251,9 @@ td.activity { color: var(--fg); font-weight: 500; font-size: 12px; }
     if(idx < 0 || idx >= N || idx === cur) return;
     const prev = cur;
     slides[prev].classList.remove('active');
-    slides[prev].classList.add(idx > prev ? 'exit-left' : '');
-    setTimeout(()=>{ slides[prev].classList.remove('exit-left'); slides[prev].style.transform=''; }, 400);
+    if (idx > prev) slides[prev].classList.add('exit-left');
     slides[prev].style.transform = idx > prev ? 'translateX(-60px)' : 'translateX(60px)';
+    setTimeout(()=>{ slides[prev].classList.remove('exit-left'); slides[prev].style.transform=''; }, 420);
 
     cur = idx;
     slides[cur].style.transform = idx > prev ? 'translateX(60px)' : 'translateX(-60px)';
@@ -1296,9 +1300,11 @@ td.activity { color: var(--fg); font-weight: 500; font-size: 12px; }
   document.getElementById('btn-full').addEventListener('click', toggleFull);
 
   // Overview
+  const selo = document.getElementById('resultado-selo');
   function toggleOverview(force){
     const open = force !== undefined ? force : !overview.classList.contains('open');
     overview.classList.toggle('open', open);
+    if (selo) selo.style.display = open ? 'none' : '';
   }
   document.getElementById('btn-overview').addEventListener('click', () => toggleOverview());
   overview.addEventListener('click', e => { if(e.target===overview) toggleOverview(false); });
