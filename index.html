@@ -549,6 +549,66 @@ td.activity { color: var(--fg); font-weight: 500; font-size: 12px; }
   pointer-events: none;
 }
 #kbd-hint.hidden { opacity: 0; }
+
+/* ─── Selo de resultado ──────────────────────────── */
+#resultado-selo {
+  position: fixed;
+  top: 22px;
+  left: 32px;
+  z-index: 9000;
+  pointer-events: none;
+  transform: rotate(-14deg);
+  transform-origin: center center;
+  user-select: none;
+}
+.selo-anel {
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  border: 6px double #c0151a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 10px;
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 0 0 2px rgba(192,21,26,.30), inset 0 0 0 2px rgba(192,21,26,.20);
+  gap: 6px;
+  text-align: center;
+}
+.selo-principal {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: #c0151a;
+  line-height: 1.1;
+}
+.selo-divisor {
+  width: 80%;
+  height: 2px;
+  background: #c0151a;
+  opacity: .70;
+  border-radius: 2px;
+}
+.selo-detalhe {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: #c0151a;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+.selo-nota {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 9px;
+  color: #c0151a;
+  opacity: .85;
+  line-height: 1.3;
+}
 </style>
 </head>
 <body>
@@ -556,6 +616,17 @@ td.activity { color: var(--fg); font-weight: 500; font-size: 12px; }
 <div id="progress-track"><div id="progress-fill"></div></div>
 
 <div id="kbd-hint">← → Navegar · G Grade · F Tela cheia</div>
+
+<!-- Selo de resultado -->
+<div id="resultado-selo" aria-label="Proposta não aprovada — 27ª posição nacional">
+  <div class="selo-anel">
+    <span class="selo-principal">NÃO<br>APROVADO</span>
+    <div class="selo-divisor"></div>
+    <span class="selo-detalhe">27ª posição<br>nacional</span>
+    <div class="selo-divisor"></div>
+    <span class="selo-nota">Apenas os 20 primeiros<br>foram contemplados</span>
+  </div>
+</div>
 
 <!-- ████████ SLIDES ████████ -->
 <div id="deck">
